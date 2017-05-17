@@ -1,0 +1,40 @@
+body,html,ul,li,p,h1,h2,h3,h4,h5,h6,img,br,hr,table,tr,td,div,dl,dt,dd,form{
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-family:'Helvetica Neue','Hiragino Sans GB','WenQuanYi Micro Hei','Microsoft Yahei',sans-serif;
+    font-size: 14px;
+    color: #383838;
+    line-height: 1.5;
+}
+.clear{
+    clear: both;
+}
+.clearfloat{
+	zoom:1;
+}
+.clearfloat:after{
+	clear:both;
+	content:"";
+	display:block;
+	visibility:hidden;
+	width:0; height:0;
+}
+ul,ol,li{
+    list-style: none;
+}
+img{
+    border: none;
+}
+a{
+    color: #555;
+}
+a:link,a:visited,a:hover,a:active{
+	text-decoration: none;
+}
+a:hover{
+    color: #3366ff;   
+}
+
+
