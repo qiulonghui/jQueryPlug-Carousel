@@ -1,5 +1,14 @@
 ;(function($){
 	function Carousel(poster,setting){
+		var self = this;
+		//保存单个旋转木马对象
+		this.poster = poster;
+		this.posterItemMain = poster.find("ul.poster-list");
+		this.nextBtn = poster.find("div.poster-next-btn");
+		this.prevBtn = poster.find("div.poster-prev-btn");
+		this.posterItems = poster.find("li.poster-item");
+		this.posterFirstItem = this.posterItems.first();
+		this.posterLastItem = this.posterItems.last();
 		//默认配置参数
 		this.setting = {
 			width:1000,
@@ -11,19 +20,152 @@
 			speed:500
 		};
 		$.extend(this.setting,setting);
-		
-		alert(poster.setSettingValue())
+		//设置配置参数值
 		this.setSettingValue();
+		//设置剩余poster的位置关系方法调用
+		this.setPosterPos();
+		
+		this.nextBtn.click(function(){
+			self.carouseRotate("left");
+		});
+		
+		this.prevBtn.click(function(){
+			self.carouseRotate("right");
+		});
 	};
 	
 	Carousel.prototype = {
+		//旋转
+		carouseRotate:function(dir){
+			var _this_ = this;
+			if(dir === "left"){
+				
+				this.posterItems.each(function(){
+					
+					var self = $(this);
+					var prev = self.prev()[0]?self.prev():_this_.posterLastItem;
+					var pWidth = prev.width();
+					var pHeight = prev.height();
+					var pzIndex = prev.css("zIndex");
+					var pOpacity = prev.css("opacity");
+					var pLeft = prev.css("left");
+					var pTop = prev.css("top");
+					
+					$(this).animate({
+									width:pWidth,
+									height:pHeight,
+									zIndex:pzIndex,
+									opacity:pOpacity,
+									left:pLeft,
+									top:pTop			
+									});
+				});
+				
+			}else if(dir === "right"){
+				
+			};
+		},
+		
+		//设置剩余poster的位置关系
+		setPosterPos:function(){
+			var self = this;
+			var sliceItems = this.posterItems.slice(1);
+			var sliceSize = sliceItems.size()/2;
+			var rightSlice = sliceItems.slice(0,sliceSize);
+			var level = Math.floor(this.posterItems.size()/2);
+			
+			var leftSlice = sliceItems.slice(sliceSize);
+			
+			//设置右边poster的位置关系和宽度高度等样式	
+			var rw = this.setting.posterWidth;
+			var rh = this.setting.posterHeight;
+			var gap = ((this.setting.width-this.setting.posterWidth)/2)/level;
+			
+			var firstLeft = (this.setting.width-this.setting.posterWidth)/2;
+			var fixOffsetLeft = firstLeft+rw;
+			
+			//设置右边poster的位置关系
+			rightSlice.each(function(i){
+				level--;
+				rw = rw*self.setting.scale;
+				rh = rh*self.setting.scale;
+				$(this).css({
+							zIndex:level,
+							width:rw,
+							height:rh,
+							opacity:1/(++i),
+							left:fixOffsetLeft+(i)*gap-rw,
+							top:self.setVertucalAlign(rh)
+						});
+			});
+			
+			//设置左边poster的位置关系
+			var lw = rightSlice.last().width();
+			var lh = rightSlice.last().height();
+			var oloop = Math.floor(this.posterItems.size()/2);
+			
+			leftSlice.each(function(i){
+				
+				$(this).css({
+							zIndex:level,
+							width:lw,
+							height:lh,
+							opacity:1/(oloop--),
+							left:i*gap,
+							top:self.setVertucalAlign(lh)
+							});
+				level++;
+				lw=lw/self.setting.scale;
+				lh=lh/self.setting.scale;
+			});
+		},
+		
+		//设置垂直排列对齐
+		setVertucalAlign:function(height){
+			var verticalType = this.setting.verticalAlign;
+			var top = 0;
+			if(verticalType === "middle"){
+				top = (this.setting.height-height)/2;
+				
+			}else if(verticalType === "top"){
+				top = 0;
+			}else if(verticalType === "bottom"){
+				top = this.setting.height-height;
+			}else{
+				top = (this.setting.height-height)/2;
+			};
+			return top;
+		},
+		
 		//设置配置参数去控制基本的宽度高度
 		setSettingValue:function(){
 			this.poster.css({
-				width : 200,
-				height : 200
+							width : this.setting.width,
+							height : this.setting.height
+						});
+			this.posterItemMain.css({
+							width : this.setting.width,
+							height : this.setting.height
+						});
+			//计算切换按钮的宽度
+			var w = (this.setting.width-this.setting.posterWidth)/2;
+			this.nextBtn.css({
+				width:w,
+				height:this.setting.height,
+				zIndex:Math.ceil(this.posterItems.size()/2)
 			});
-		}
+			this.prevBtn.css({
+				width:w,
+				height:this.setting.height,
+				zIndex:Math.ceil(this.posterItems.size()/2)
+			});
+			this.posterFirstItem.css({
+				width:this.setting.posterWidth,
+				height:this.setting.posterHeight,
+				left:w,
+				zIndex:Math.floor(this.posterItems.size()/2)
+			});
+		},
 	};
 	
 	//初始化操作函数，自动把集合中的DOM节点 new为Carousel对象实例。
