@@ -1,7 +1,19 @@
 ;(function($){
+	//初始化操作函数，自动把集合中的DOM节点 new为Carousel对象实例。
+	Carousel.init = function(posters,setting){
+		var _this_ = this;
+		posters.each(function(){
+			new _this_($(this),setting);
+		});
+	}
+	
 	function Carousel(poster,setting){
 		var self = this;
+<<<<<<< HEAD
 		//保存单个旋转木马对象
+=======
+		//保存单个旋转木马jQuery对象
+>>>>>>> origin/master
 		this.poster = poster;
 		this.posterItemMain = poster.find("ul.poster-list");
 		this.nextBtn = poster.find("div.poster-next-btn");
@@ -9,6 +21,10 @@
 		this.posterItems = poster.find("li.poster-item");
 		this.posterFirstItem = this.posterItems.first();
 		this.posterLastItem = this.posterItems.last();
+<<<<<<< HEAD
+=======
+		this.rotateFlag = true;
+>>>>>>> origin/master
 		//默认配置参数
 		this.setting = {
 			width:1000,
@@ -17,13 +33,16 @@
 			posterHeight:270,
 			verticalAlign:"middle",
 			scale:0.9,
-			speed:500
+			speed:500,
+			autoPlay:false,
+			delay:5000
 		};
 		$.extend(this.setting,setting);
 		//设置配置参数值
 		this.setSettingValue();
 		//设置剩余poster的位置关系方法调用
 		this.setPosterPos();
+<<<<<<< HEAD
 		
 		this.nextBtn.click(function(){
 			self.carouseRotate("left");
@@ -35,6 +54,44 @@
 	};
 	
 	Carousel.prototype = {
+=======
+		//左旋转按钮
+		this.nextBtn.click(function(){
+			
+			if(self.rotateFlag){
+				self.rotateFlag = false;
+				self.carouseRotate("left");
+			}			
+		});
+		//右旋转按钮
+		this.prevBtn.click(function(){
+			
+			if(self.rotateFlag){
+				self.rotateFlag = false;
+				self.carouseRotate("right");
+			}			
+		});
+		//是否开启自动播放
+		if(this.setting.autoPlay){
+			this.autoPlay();
+			this.poster.hover(function(){
+				clearInterval(self.time);
+			},function(){
+				self.autoPlay();
+			})
+		};
+		
+	};
+	
+	Carousel.prototype = {
+		//自动播放
+		autoPlay:function(){
+			var self = this;
+			this.time = setInterval(function(){
+				self.nextBtn.click();
+			},this.setting.delay);//setInterval计时器的时间间隔中的this指向实例对象
+		},
+>>>>>>> origin/master
 		//旋转
 		carouseRotate:function(dir){
 			var _this_ = this;
@@ -52,17 +109,72 @@
 					var pTop = prev.css("top");
 					
 					$(this).animate({
+<<<<<<< HEAD
 									width:pWidth,
 									height:pHeight,
 									zIndex:pzIndex,
 									opacity:pOpacity,
 									left:pLeft,
 									top:pTop			
+=======
+									//width:pWidth,
+									//height:pHeight,
+									zIndex:pzIndex,
+									//opacity:pOpacity,
+									//left:pLeft,
+									//top:pTop			
+									},1,function(){
+										
+										$(this).animate({
+														width:pWidth,
+														height:pHeight,
+														//zIndex:pzIndex,
+														opacity:pOpacity,
+														left:pLeft,
+														top:pTop		
+													},_this_.setting.speed,function(){
+														_this_.rotateFlag = true;
+													});
+>>>>>>> origin/master
 									});
 				});
 				
 			}else if(dir === "right"){
 				
+<<<<<<< HEAD
+=======
+				this.posterItems.each(function(){
+					
+					var self = $(this);
+					var next = self.next()[0]?self.next():_this_.posterFirstItem;
+					var nWidth = next.width();
+					var nHeight = next.height();
+					var nzIndex = next.css("zIndex");
+					var nOpacity = next.css("opacity");
+					var nLeft = next.css("left");
+					var nTop = next.css("top");
+					
+					$(this).animate({
+									//width:nWidth,
+									//height:nHeight,
+									zIndex:nzIndex,
+									//opacity:nOpacity,
+									//left:nLeft,
+									//top:nTop			
+								},1,function(){
+										$(this).animate({
+														width:nWidth,
+														height:nHeight,
+														//zIndex:nzIndex,
+														opacity:nOpacity,
+														left:nLeft,
+														top:nTop			
+												},_this_.setting.speed,function(){
+													_this_.rotateFlag = true;
+												});
+									});
+				});
+>>>>>>> origin/master
 			};
 		},
 		
@@ -153,6 +265,7 @@
 				width:w,
 				height:this.setting.height,
 				zIndex:Math.ceil(this.posterItems.size()/2)
+<<<<<<< HEAD
 			});
 			this.prevBtn.css({
 				width:w,
@@ -165,16 +278,24 @@
 				left:w,
 				zIndex:Math.floor(this.posterItems.size()/2)
 			});
+=======
+			});
+			this.prevBtn.css({
+				width:w,
+				height:this.setting.height,
+				zIndex:Math.ceil(this.posterItems.size()/2)
+			});
+			this.posterFirstItem.css({
+				width:this.setting.posterWidth,
+				height:this.setting.posterHeight,
+				left:w,
+				zIndex:Math.floor(this.posterItems.size()/2)
+			});
+>>>>>>> origin/master
 		},
 	};
 	
-	//初始化操作函数，自动把集合中的DOM节点 new为Carousel对象实例。
-	Carousel.init = function(posters,setting){
-		var _this_ = this;
-		posters.each(function(){
-			new _this_($(this),setting);
-		});
-	}
+	
 	
 	window['Carousel'] = Carousel;
 })(jQuery);

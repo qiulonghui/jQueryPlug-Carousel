@@ -21,7 +21,19 @@
 		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 		<script src="js/carousel.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			var setting = {
+						width:800,		
+						height:270,
+						posterWidth:640,
+						posterHeight:270,
+						verticalAlign:"middle",
+						scale:0.9,
+						autoPlay:true,
+						delay:1000,
+						speed:500
+					};
 			$(function(){
+<<<<<<< HEAD
 				//var carousel = new Carousel($(".poster-main")[0]);
 				
 				var setting = {
@@ -34,6 +46,10 @@
 					speed:500
 				};
 				
+=======
+				//var carousel = new Carousel($(".poster-main")[0]);			
+				console.log(setting.delay)
+>>>>>>> origin/master
 				Carousel.init($(".poster-main"),setting);
 			})
 		</script>
