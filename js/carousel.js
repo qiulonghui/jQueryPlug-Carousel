@@ -9,11 +9,8 @@
 	
 	function Carousel(poster,setting){
 		var self = this;
-<<<<<<< HEAD
 		//保存单个旋转木马对象
-=======
 		//保存单个旋转木马jQuery对象
->>>>>>> origin/master
 		this.poster = poster;
 		this.posterItemMain = poster.find("ul.poster-list");
 		this.nextBtn = poster.find("div.poster-next-btn");
@@ -21,10 +18,7 @@
 		this.posterItems = poster.find("li.poster-item");
 		this.posterFirstItem = this.posterItems.first();
 		this.posterLastItem = this.posterItems.last();
-<<<<<<< HEAD
-=======
 		this.rotateFlag = true;
->>>>>>> origin/master
 		//默认配置参数
 		this.setting = {
 			width:1000,
@@ -42,7 +36,6 @@
 		this.setSettingValue();
 		//设置剩余poster的位置关系方法调用
 		this.setPosterPos();
-<<<<<<< HEAD
 		
 		this.nextBtn.click(function(){
 			self.carouseRotate("left");
@@ -54,7 +47,6 @@
 	};
 	
 	Carousel.prototype = {
-=======
 		//左旋转按钮
 		this.nextBtn.click(function(){
 			
@@ -91,7 +83,6 @@
 				self.nextBtn.click();
 			},this.setting.delay);//setInterval计时器的时间间隔中的this指向实例对象
 		},
->>>>>>> origin/master
 		//旋转
 		carouseRotate:function(dir){
 			var _this_ = this;
@@ -109,14 +100,12 @@
 					var pTop = prev.css("top");
 					
 					$(this).animate({
-<<<<<<< HEAD
 									width:pWidth,
 									height:pHeight,
 									zIndex:pzIndex,
 									opacity:pOpacity,
 									left:pLeft,
 									top:pTop			
-=======
 									//width:pWidth,
 									//height:pHeight,
 									zIndex:pzIndex,
@@ -135,14 +124,11 @@
 													},_this_.setting.speed,function(){
 														_this_.rotateFlag = true;
 													});
->>>>>>> origin/master
 									});
 				});
 				
 			}else if(dir === "right"){
 				
-<<<<<<< HEAD
-=======
 				this.posterItems.each(function(){
 					
 					var self = $(this);
@@ -174,7 +160,6 @@
 												});
 									});
 				});
->>>>>>> origin/master
 			};
 		},
 		
@@ -265,7 +250,6 @@
 				width:w,
 				height:this.setting.height,
 				zIndex:Math.ceil(this.posterItems.size()/2)
-<<<<<<< HEAD
 			});
 			this.prevBtn.css({
 				width:w,
@@ -278,7 +262,6 @@
 				left:w,
 				zIndex:Math.floor(this.posterItems.size()/2)
 			});
-=======
 			});
 			this.prevBtn.css({
 				width:w,
@@ -291,7 +274,6 @@
 				left:w,
 				zIndex:Math.floor(this.posterItems.size()/2)
 			});
->>>>>>> origin/master
 		},
 	};
 	
